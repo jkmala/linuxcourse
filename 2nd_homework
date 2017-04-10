@@ -14,7 +14,8 @@ Ensimmäiset komentoni olivat:
 Näillä siis vaihdon itselle suomalaisen näppämistöasettelun. Ja latasin asensin Git-ohjelman jota käytetään myös tämön kotitehtävän raportoimiseen. Olimme jo oppitunnilla tutustuneet Git-ohjelmaan ja olin perustanut GitHub.com tilin, jossa minulla oli jo linuxcourse -niminen projekti. Tähän kansioon aion kerätä tämän kurssin kotitehtävät. Seuraavalla komennolla otin käyttöön kyseisen projektin kansion GitHubista:
 > $ git clone https://github.com/jkmala/linuxcourse
 
-kuva 1
+![kuva 1](/2-1.jpg)
+Format: ![Alt kuva 1](/2-1.jpg)
 
 Asensin myös Gedit editorin, koska se vaikutti mukavammalta kuin Nano.
 > $ sudo apt-get install -y gedit
@@ -22,19 +23,30 @@ Asensin myös Gedit editorin, koska se vaikutti mukavammalta kuin Nano.
 Siirryin linuxcourse -kansioon ja aloitin tämän läksyn kirjoittamisen komennolla:
 > $ gedit 2nd_homework
 
+Avasin itselleni myös oppaan miten kirjoittaa markdownia sivulta:
+https://guides.github.com/features/mastering-markdown/!
+[GitHub](https://guides.github.com/features/mastering-markdown/)
+
 Kirjoittelin tätä alkua tässä geditillä, mutta ajattelin kokeilla tallennusta ja miten voisin jatkaa toisella koneella tekstin kirjoittamista:
 > $ git add .
 > $ git pull
 
-kuva 2
+
+![kuva 2](/2-2.jpg)
+Format: ![Alt kuva 2](2-2.jpg)
 
 Muistin väärin, tässä vaiheessa piti antaa komento:
 > $ git commit
-Tällä siis hyväksyttiin muutokseni.
+Tällä siis hyväksytin muutokseni. Tässä vaiheessa minun piti tunnistautua GitHubille. Opettajan kotisivuilta löytyi vinkki millä vältän jatkuvien salasanojen näppäilemisen
 
+![kuva 3](/2-3.jpg)
+Format: ![Alt kuva 3](2-3.jpg)
+
+Kuten kuvasta näkyy tässä vaiheessa minun piti tunnistautu
 Nyt sitten kokoan paikalliset tiedostot kasaan komennolla 
 > $ git pull
 
-yhteyttä Githubissa olevaan 
+Ja yhdistän ne Github palvelimella olevaan linuxcourse kansiooni:
+> $ git push
 
 
