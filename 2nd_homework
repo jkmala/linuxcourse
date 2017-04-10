@@ -37,16 +37,31 @@ Format: ![Alt kuva 2](2-2.jpg)
 
 Muistin väärin, tässä vaiheessa piti antaa komento:
 > $ git commit
-Tällä siis hyväksytin muutokseni. Tässä vaiheessa minun piti tunnistautua GitHubille. Opettajan kotisivuilta löytyi vinkki millä vältän jatkuvien salasanojen näppäilemisen
+Tällä siis hyväksytin muutokseni ja kirjoitin lyhyen kuvauksen muutoksista nano-ohjelmalla avautuneeseen tiedostoon.
 
-![kuva 3](/2-3.jpg)
-Format: ![Alt kuva 3](2-3.jpg)
+![kuva 3](/2-3.png)
+Format: ![Alt kuva 3](2-3.png)
 
-Kuten kuvasta näkyy tässä vaiheessa minun piti tunnistautu
+Opettajan kotisivuilta![terokarvinen.com](http://terokarvinen.com/2016/publish-your-project-with-github) löytyi vinkki millä vältän jatkuvien salasanojen näppäilemisen. Komento menee näin:
+> $ git config --global credential.helper "cache --timeout=7200"
+
+Timeout määritellään sekunneissa ja (7200 = 2 * 60 * 60) on kaksi tuntia, jonka aikana ei tarvitse salasanaa kuin ensimmäisellä kerralla.
+
+Aloitan tunnistautumisen antamalla lisäkomentoja:
+> $ git config --global user.email "oma@email.fi"
+> $ git config --global user.name "oma nimi"
+Tässä käytin keksittyjä tietoja, mutta on parempi laittaa oikeat tiedot lainausmerkkien sisään, jotta ryhmätöitä tehdessä päivitysten tekijä tunnistetaan.
+
+
 Nyt sitten kokoan paikalliset tiedostot kasaan komennolla 
 > $ git pull
 
 Ja yhdistän ne Github palvelimella olevaan linuxcourse kansiooni:
 > $ git push
+Tässä vaiheessa minulta kysytään salasanani.
+
+![kuva 4](/2-4.png)
+Format: ![Alt kuva 3](2-4.png)
+
 
 
