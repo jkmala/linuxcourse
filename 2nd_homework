@@ -6,7 +6,35 @@ Kotitehtävän ohjeistus löytyi kurssisivulta![terokarvinen.com](http://terokar
 
 Aloitin kotitehtäväni kannettavalla tietokoneella, johon käytin Live-USB tikkua, jossa oli Xubuntu 16.01 käyttöjärjestelmä.
 
-Ensimmäinen komentoni:
+Ensimmäiset komentoni olivat:
 > $ setxkbmap fi
+> $ sudo apt-get update
+> $ sudo apt-get -y install git
 
- 
+Näillä siis vaihdon itselle suomalaisen näppämistöasettelun. Ja latasin asensin Git-ohjelman jota käytetään myös tämön kotitehtävän raportoimiseen. Olimme jo oppitunnilla tutustuneet Git-ohjelmaan ja olin perustanut GitHub.com tilin, jossa minulla oli jo linuxcourse -niminen projekti. Tähän kansioon aion kerätä tämän kurssin kotitehtävät. Seuraavalla komennolla otin käyttöön kyseisen projektin kansion GitHubista:
+> $ git clone https://github.com/jkmala/linuxcourse
+
+kuva 1
+
+Asensin myös Gedit editorin, koska se vaikutti mukavammalta kuin Nano.
+> $ sudo apt-get install -y gedit
+
+Siirryin linuxcourse -kansioon ja aloitin tämän läksyn kirjoittamisen komennolla:
+> $ gedit 2nd_homework
+
+Kirjoittelin tätä alkua tässä geditillä, mutta ajattelin kokeilla tallennusta ja miten voisin jatkaa toisella koneella tekstin kirjoittamista:
+> $ git add .
+> $ git pull
+
+kuva 2
+
+Muistin väärin, tässä vaiheessa piti antaa komento:
+> $ git commit
+Tällä siis hyväksyttiin muutokseni.
+
+Nyt sitten kokoan paikalliset tiedostot kasaan komennolla 
+> $ git pull
+
+yhteyttä Githubissa olevaan 
+
+
