@@ -1,0 +1,12 @@
+# 2. läksy - asenna palvelin Puppetilla
+
+## Alkutoimet
+
+Kotitehtävän ohjeistus löytyi kurssisivulta![terokarvinen.com](http://terokarvinen.com/2017/aikataulu-%E2%80%93-linuxin-keskitetty-hallinta-%E2%80%93-ict4tn011-11-%E2%80%93-loppukevat-2017-p2#comment-22372), jota opettaja Tero Karvinen ylläpitää. 
+
+Aloitin kotitehtäväni kannettavalla tietokoneella, johon käytin Live-USB tikkua, jossa oli Xubuntu 16.01 käyttöjärjestelmä.
+
+Ensimmäinen komentoni:
+> $ setxkbmap fi
+
+ 
