@@ -72,6 +72,7 @@ Valitsin asennettavaksi palvelimeksi Apache2 -nettipalvelimen. Aloitin tarkistam
 
 Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.8/lang_relationships.html) lukemalla kirjoitin Nanolla seuraavan luokan:
 ...
+
 class apassi {
       package {apache2:
         ensure => 'installed',
@@ -94,6 +95,8 @@ Jonka ajoin komennolla:
 > $ sudo puppet apply -e 'class {"apassi":}'
 
 ![kuva 6](/2-6.png)
+
+
 Kuten kuvasta näkyy niin nyt curl localhost komento antoi vastauksen.
 
 Package-file-service asennus tehty ja vähän konfiguroitu, mutta se jäi vähän ohueksi. 
