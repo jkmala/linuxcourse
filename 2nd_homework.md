@@ -8,7 +8,9 @@ Aloitin kotitehtäväni kannettavalla tietokoneella, johon käytin Live-USB tikk
 
 Ensimmäiset komentoni olivat:
 > $ setxkbmap fi
+
 > $ sudo apt-get update
+
 > $ sudo apt-get -y install git
 
 Näillä siis vaihdon itselle suomalaisen näppämistöasettelun. Ja latasin asensin Git-ohjelman jota käytetään myös tämön kotitehtävän raportoimiseen. Olimme jo oppitunnilla tutustuneet Git-ohjelmaan ja olin perustanut GitHub.com tilin, jossa minulla oli jo linuxcourse -niminen projekti. Tähän kansioon aion kerätä tämän kurssin kotitehtävät. Seuraavalla komennolla otin käyttöön kyseisen projektin kansion GitHubista:
@@ -28,32 +30,42 @@ Avasin itselleni myös oppaan miten kirjoittaa markdownia sivulta:
 
 Kirjoittelin tätä alkua tässä geditillä, mutta ajattelin kokeilla tallennusta ja miten voisin jatkaa toisella koneella tekstin kirjoittamista:
 > $ git add .
+
 > $ git pull
 
 ![kuva 2](/2-2.jpg)
 
 Muistin väärin, tässä vaiheessa piti antaa komento:
+
 > $ git commit
+
 Tällä siis hyväksytin muutokseni ja kirjoitin lyhyen kuvauksen muutoksista nano-ohjelmalla avautuneeseen tiedostoon.
 
 ![kuva 3](/2-3.png)
 
 [Opettajamme Tero Karvisen kotisivuilta](http://terokarvinen.com/2016/publish-your-project-with-github) löytyi vinkki millä vältän jatkuvien salasanojen näppäilemisen. Komento menee näin:
+
 > $ git config --global credential.helper "cache --timeout=7200"
 
 Timeout määritellään sekunneissa ja (7200 = 2 * 60 * 60) on kaksi tuntia, jonka aikana ei tarvitse salasanaa kuin ensimmäisellä kerralla.
 
 Aloitan tunnistautumisen antamalla lisäkomentoja:
+
 > $ git config --global user.email "juha@email.fi"
+
 > $ git config --global user.name "oma nimi"
+
 Tässä käytin keksittyjä tietoja, mutta on parempi laittaa oikeat tiedot lainausmerkkien sisään, jotta ryhmätöitä tehdessä päivitysten tekijä tunnistetaan.
 
 
 Nyt sitten kokoan paikalliset tiedostot kasaan komennolla 
+
 > $ git pull
 
 Ja yhdistän ne Github palvelimella olevaan linuxcourse kansiooni:
+
 > $ git push
+
 Tässä vaiheessa minulta kysytään Github salasanani.
 
 ![kuva 4](/2-4.png)
@@ -65,9 +77,13 @@ Valitsin asennettavaksi palvelimeksi Apache2 -nettipalvelimen. Aloitin tarkistam
 ![kuva 5](/2-5.png)
 
 Ensimmäisellä tunnilla opimme tekemään yksinkertaisia puppetteja. Kävin katsomassa omilta [Wordpress-sivuilta](https://jkmala.wordpress.com/category/linuxin-keskitetty-hallinta-kevat-2017/) hieman apua.
+
 > $ sudo apt-get -y install puppet
+
 > $ cd /etc/puppet
+
 > $ sudo mkdir -p modules/apassi/manifests
+
 > $ sudoedit modules/apassi/manifests/init.pp
 
 Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.8/lang_relationships.html) lukemalla kirjoitin seuraavan luokan:
@@ -93,6 +109,7 @@ Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.
 ...
 
 Jonka ajoin komennolla: 
+
 > $ sudo puppet apply -e 'class {"apassi":}'
 
 ![kuva 6](/2-6.png)
