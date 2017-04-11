@@ -88,7 +88,7 @@ Ensimmäisellä tunnilla opimme tekemään yksinkertaisia puppetteja. Kävin kat
 
 Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.8/lang_relationships.html) lukemalla kirjoitin seuraavan luokan:
    
-...
+
 
 	class apassi {
 		package {apache2:
@@ -106,7 +106,6 @@ Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.
             		enable => 'true',
             		subscribe => File ['/var/www/html/index.html'],
 	}
-...
 
 Jonka ajoin komennolla: 
 
