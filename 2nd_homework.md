@@ -44,7 +44,7 @@ Tällä siis hyväksytin muutokseni ja kirjoitin lyhyen kuvauksen muutoksista na
 Timeout määritellään sekunneissa ja (7200 = 2 * 60 * 60) on kaksi tuntia, jonka aikana ei tarvitse salasanaa kuin ensimmäisellä kerralla.
 
 Aloitan tunnistautumisen antamalla lisäkomentoja:
-> $ git config --global user.email "oma@email.fi"
+> $ git config --global user.email "juha@email.fi"
 > $ git config --global user.name "oma nimi"
 Tässä käytin keksittyjä tietoja, mutta on parempi laittaa oikeat tiedot lainausmerkkien sisään, jotta ryhmätöitä tehdessä päivitysten tekijä tunnistetaan.
 
@@ -54,7 +54,7 @@ Nyt sitten kokoan paikalliset tiedostot kasaan komennolla
 
 Ja yhdistän ne Github palvelimella olevaan linuxcourse kansiooni:
 > $ git push
-Tässä vaiheessa minulta kysytään salasanani.
+Tässä vaiheessa minulta kysytään Github salasanani.
 
 ![kuva 4](/2-4.png)
 
@@ -64,16 +64,18 @@ Valitsin asennettavaksi palvelimeksi Apache2 -nettipalvelimen. Aloitin tarkistam
 
 ![kuva 5](/2-5.png)
 
-1. tunnilla opimme tekemään yksinkertaisia puppetteja. Kävin katsomassa omilta [Wordpress-sivuilta](https://jkmala.wordpress.com) hieman apua.
+Ensimmäisellä tunnilla opimme tekemään yksinkertaisia puppetteja. Kävin katsomassa omilta [Wordpress-sivuilta](https://jkmala.wordpress.com) hieman apua.
 > $ sudo apt-get -y install puppet
 > $ cd /etc/puppet
 > $ sudo mkdir -p modules/apassi/manifests
 > $ sudoedit modules/apassi/manifests/init.pp
 
 Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.8/lang_relationships.html) lukemalla kirjoitin Nanolla seuraavan luokan:
+   
 ...
+
 class apassi {
-      package {apache2:
+	package {apache2:
         ensure => 'installed',
         allowcdrom => 'true',
       }
@@ -96,6 +98,6 @@ Jonka ajoin komennolla:
 ![kuva 6](/2-6.png)
 Kuten kuvasta näkyy niin nyt curl localhost komento antoi vastauksen.
 
-Package-file-service asennus tehty ja vähän konfiguroitu, mutta se jäi vähän ohueksi. 
+Package-file-service asennus tehty ja vähän myös konfiguroitu, vaikka olisi kannattanut varmaan konfiguroida template-pohjalla. 
 
-
+Epäselväksi jäi, että miten tätä minun markdown-tekstiä voi tarkistella? Hei vaihda vain tiedoston päätteeksi .md tai .markdown, niin johan alkaa näkymään nettisivulla.
