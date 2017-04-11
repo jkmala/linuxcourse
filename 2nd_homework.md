@@ -64,32 +64,32 @@ Valitsin asennettavaksi palvelimeksi Apache2 -nettipalvelimen. Aloitin tarkistam
 
 ![kuva 5](/2-5.png)
 
-Ensimmäisellä tunnilla opimme tekemään yksinkertaisia puppetteja. Kävin katsomassa omilta [Wordpress-sivuilta](https://jkmala.wordpress.com) hieman apua.
+Ensimmäisellä tunnilla opimme tekemään yksinkertaisia puppetteja. Kävin katsomassa omilta [Wordpress-sivuilta](https://jkmala.wordpress.com/category/linuxin-keskitetty-hallinta-kevat-2017/) hieman apua.
 > $ sudo apt-get -y install puppet
 > $ cd /etc/puppet
 > $ sudo mkdir -p modules/apassi/manifests
 > $ sudoedit modules/apassi/manifests/init.pp
 
-Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.8/lang_relationships.html) lukemalla kirjoitin Nanolla seuraavan luokan:
+Vanhoja muistiinpanojani ja [Puppetin ohjeita](https://docs.puppet.com/puppet/3.8/lang_relationships.html) lukemalla kirjoitin seuraavan luokan:
    
 ...
 
-class apassi {
-	package {apache2:
-        ensure => 'installed',
-        allowcdrom => 'true',
-      }
+	class apassi {
+		package {apache2:
+        		ensure => 'installed',
+        		allowcdrom => 'true',
+      		}
       
-      file {'/var/www/html/index.html':
-        content => "Hello everybody!",
-        require => Package["apache2"];
-      }
+      		file {'/var/www/html/index.html':
+        		content => "Hello everybody!",
+        		require => Package["apache2"];
+      		}
       
-      service {apache2:
-            ensure => 'running',
-            enable => 'true',
-            subscribe => File ['/var/www/html/index.html'],
-}
+      		service {apache2:
+ 			ensure => 'running',
+            		enable => 'true',
+            		subscribe => File ['/var/www/html/index.html'],
+	}
 ...
 
 Jonka ajoin komennolla: 
@@ -102,4 +102,4 @@ Kuten kuvasta näkyy niin nyt curl localhost komento antoi vastauksen.
 
 Package-file-service asennus tehty ja vähän myös konfiguroitu, vaikka olisi kannattanut varmaan konfiguroida template-pohjalla. 
 
-Epäselväksi jäi, että miten tätä minun markdown-tekstiä voi tarkistella? Hei vaihda vain tiedoston päätteeksi .md tai .markdown, niin johan alkaa näkymään nettisivulla.
+Epäselväksi jäi, että miten tätä minun markdown-tekstiä voi tarkistella? Hei nyt keksin: vaihda vain tiedoston päätteeksi .md tai .markdown, niin johan alkaa näkymään nettisivulla, löysin sen tiedon [tältä sivulta](https://guides.github.com/features/mastering-markdown/#what).
