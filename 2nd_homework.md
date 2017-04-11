@@ -96,6 +96,8 @@ Jonka ajoin komennolla:
 > $ sudo puppet apply -e 'class {"apassi":}'
 
 ![kuva 6](/2-6.png)
+
+
 Kuten kuvasta näkyy niin nyt curl localhost komento antoi vastauksen.
 
 Package-file-service asennus tehty ja vähän myös konfiguroitu, vaikka olisi kannattanut varmaan konfiguroida template-pohjalla. 
