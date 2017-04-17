@@ -52,11 +52,13 @@ Seuraavaksi kirjoitin manifestin [Tero Karvisen sivuilta](http://terokarvinen.co
 
     $ mkdir -p /modules/juhasshd/manifests
     $ nano modules/juhasshd/manifests/init.pp
-    
+
+Init.pp -tiedoston sisällöksi kopioin Karvisen tekemän esimerkin omilla muokkaukselle (allowcdrom, koska liveUsb:
+
     class juhasshd {
         package { 'ssh':
                 ensure => 'installed',
-		allowcdrom => 'true',
+			allowcdrom => 'true',
         }
 
         file { '/etc/ssh/sshd_config':
@@ -72,7 +74,7 @@ Seuraavaksi kirjoitin manifestin [Tero Karvisen sivuilta](http://terokarvinen.co
         }
     }
 
-    
+Tree -komento antoi
     
     $ tree
     .
@@ -83,4 +85,80 @@ Seuraavaksi kirjoitin manifestin [Tero Karvisen sivuilta](http://terokarvinen.co
             │   └── init.pp
             └── templates
                 └── sshd_config.erb
+
+Tässä vaiheessa halusin kokeilla Puppetin ajoa komennolla:
+
+    $ puppet apply --modulepath modules/ -e 'class {"juhasshd":}'
+    Error: Could not match “juhasshd/sshd_config.erb”), at /home/xubuntu/linuxcourse/sshd/modules/juhasshd/manifests/init.pp:8 on node xubuntu.elisa
+    Error: Could not match “juhasshd/sshd_config.erb”), at /home/xubuntu/linuxcourse/sshd/modules/juhasshd/manifests/init.pp:8 on node xubuntu.elisa
+
+Tarviko tähän sudoa?
+
+    sudo puppet apply --modulepath modules/ -e 'class {"juhasshd":}'
+    Error: Could not match “juhasshd/sshd_config.erb”), at /home/xubuntu/linuxcourse/sshd/modules/juhasshd/manifests/init.pp:8 on node xubuntu.elisa
+    Error: Could not match “juhasshd/sshd_config.erb”), at /home/xubuntu/linuxcourse/sshd/modules/juhasshd/manifests/init.pp:8 on node xubuntu.elisa
+    
+Ei auttanut, muokkasin template -rivin pois init.pp tiedostosta ja ajoin uudelleen komennon:
+
+    xubuntu@xubuntu:~/linuxcourse/sshd$ sudo puppet apply --modulepath modules/ -e 'class {"juhasshd":}'
+    Notice: Compiled catalog for xubuntu.elisa in environment production in 0.36 seconds
+    Notice: /Stage[main]/Juhasshd/Package[ssh]/ensure: ensure changed 'purged' to 'present'
+    Notice: Finished catalog run in 1.95 seconds
+Ainakin lähti toimimaan ja käytän komentoa service sshd status -todistaakseni että ssh-daemon on päällä portissa 22. Template tiedostoni pitäisi muuttaa nimenomaan portin joksikin toiseksi.
+
+    xubuntu@xubuntu:~/linuxcourse/sshd$ service sshd status
+    ● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2017-04-17 18:46:40 UTC; 1h 25min ago
+    Main PID: 12155 (sshd)
+     CGroup: /system.slice/ssh.service
+             └─12155 /usr/sbin/sshd -D
+
+    Apr 17 18:46:40 xubuntu systemd[1]: Starting OpenBSD Secure Shell server...
+    Apr 17 18:46:40 xubuntu sshd[12155]: Server listening on 0.0.0.0 port 22.
+    Apr 17 18:46:40 xubuntu sshd[12155]: Server listening on :: port 22.
+    Apr 17 18:46:40 xubuntu systemd[1]: Started OpenBSD Secure Shell server.
+
+Muokkaan taas init.pp tiedostoa ja lisään sinne aikaisemmin poistamani rivin. Tällä kertaa kirjoitan sen itse käsin, jonka jälkeen se näyttää tältä:
+
+    class juhasshd {
+        package { 'ssh':
+                ensure => 'installed',
+		allowcdrom => 'true',
+        }
+
+        file { '/etc/ssh/sshd_config':
+		content => template('juhasshd/sshd_config.erb'),
+                require => Package['ssh'],
+                notify => Service['ssh'],
+        }
+
+        service {'ssh':
+                ensure => 'running',
+                enable => 'true',
+                require => Package['ssh'],
+        }
+    }
+
+Ajan Puppetin uudelleen ja tarkistan ssh-daemonin portin:
+
+    xubuntu@xubuntu:~/linuxcourse/sshd$ sudo puppet apply --modulepath modules/ -e 'class {"juhasshd":}'
+    Notice: Compiled catalog for xubuntu.elisa in environment production in 0.37 seconds
+    Notice: /Stage[main]/Juhasshd/File[/etc/ssh/sshd_config]/content: content changed '{md5}bd3a2b95f8b4b180eed707794ad81e4d' to '{md5}13f1e619e91b82c8e80c01e12462b3f3'
+    Notice: /Stage[main]/Juhasshd/Service[ssh]: Triggered 'refresh' from 1 events
+    Notice: Finished catalog run in 0.12 seconds
+    xubuntu@xubuntu:~/linuxcourse/sshd$ service sshd status
+    ● ssh.service - OpenBSD Secure Shell server
+       Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+       Active: active (running) since Mon 2017-04-17 20:15:27 UTC; 24s ago
+     Main PID: 13649 (sshd)
+       CGroup: /system.slice/ssh.service
+               └─13649 /usr/sbin/sshd -D
+
+    Apr 17 20:15:27 xubuntu systemd[1]: Starting OpenBSD Secure Shell server...
+    Apr 17 20:15:27 xubuntu sshd[13649]: Server listening on 0.0.0.0 port 52222.
+    Apr 17 20:15:27 xubuntu sshd[13649]: Server listening on :: port 52222.
+    Apr 17 20:15:27 xubuntu systemd[1]: Started OpenBSD Secure Shell server.
+    
+Kuten statuksesta näkyy portti on muutettu nyt 52222.
 
