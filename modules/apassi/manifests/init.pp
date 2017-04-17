@@ -26,8 +26,12 @@ class apassi {
 	file {'/etc/apache2/sites-enabled/xubuntu.conf':
 		ensure => 'link',
 		target => '/etc/apache2/sites-available/xubuntu.conf'
-		# require => File['/etc/apache2/sites-available/xubuntu.conf'],
+		#require => File['/etc/apache2/sites-available/xubuntu.conf'],
 				
+	}
+	
+	file {'/etc/apache2/sites-enabled/000-default.conf':
+		ensure => 'absent',
 	}
 	
 	service {'apache2':
