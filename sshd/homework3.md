@@ -4,7 +4,13 @@
 
 Tehtävänanto löytyi [opettajan sivuilta](http://terokarvinen.com/2017/aikataulu-%E2%80%93-linuxin-keskitetty-hallinta-%E2%80%93-ict4tn011-11-%E2%80%93-loppukevat-2017-p2#comment-22379).
 
-Käytin tehtävän tekemiseen Live-USB muistitikkua, joten aloitin ihan alkutekijöistä. Käyttämäni tietokoneen Biosiin oli laitettu asetukseksi Ultra Fast Boot, jolloin en pääse Boot menu -valikkoon mitenkään, vaan käyttöjärjestelmä Windows 10 latautui valmiiksi. Kirjoitin hakutoimintoon "käynnistys", jolla löysin valikon, josta löytyi muistitikulta käynnistys. Eli latasin Windows 10 puolelta suoraan käyttöjärjestelmän USB-tikulta.
+Käytin tehtävän tekemiseen Live-USB muistitikkua, joten aloitin ihan alkutekijöistä. Käyttämäni tietokoneen Biosiin oli laitettu asetukseksi Ultra Fast Boot, jolloin en pääse Boot menu -valikkoon mitenkään, vaan käyttöjärjestelmä Windows 10 latautui valmiiksi. Kirjoitin hakutoimintoon "startup", jolla löysin valikon, josta löytyi muistitikulta käynnistys. Eli latasin Windows 10 puolelta suoraan käyttöjärjestelmän USB-tikulta.
+
+![kuva1](img01.png)
+![kuva2](img02.png)
+![kuva3](img03.png)
+![kuva4](img04.png)
+
 
 Linuxin käynnistyttyä, suoritin peruskomennot:
 
@@ -171,7 +177,7 @@ B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää G
     5  git clone https://github.com/jkmala/linuxcourse
     6  sudo puppet apply --modulepath linuxcourse/modules/ -e 'class {"apassi":}'
 
-C) Yllä olevat komennot ajavat puppet modulin, jonka tein luokassa viime tunnin päätteeksi. Apache2 -webpalvelimelle säädettiin omat asetukset, joissa yhtenä oli tehtävänannossa pyydetty oletussivun muokkaus. Tässä apassi-modulen init.pp tiedosto manifests-kansiosta:
+C) Yllä olevat komennot ajavat puppet modulin, jonka tein luokassa viime tunnilla tuntitehtävänä. Apache2 -webpalvelimelle säädettiin omat asetukset, joissa yhtenä oli tehtävänannossa pyydetty oletussivun muokkaus. Ohjeita löysin tähän tehtävään taas [opettajan sivuilta](http://terokarvinen.com/2016/new-default-website-with-apache2-show-your-homepage-at-top-of-example-com-no-tilde). Tässä apassi-moduleni init.pp-tiedosto manifests-kansiosta:
 
     class apassi {
 	
@@ -222,14 +228,17 @@ C) Yllä olevat komennot ajavat puppet modulin, jonka tein luokassa viime tunnin
 	}	
     }
 
-xubuntu@xubuntu:~/linuxcourse/modules$ tree 
-.
-└── apassi
-    ├── manifests
-    │   └── init.pp
-    └── templates
-        └── xubuntu.conf.erb
+    xubuntu@xubuntu:~/linuxcourse/modules$ tree 
+    .
+    └── apassi
+        ├── manifests
+        │   └── init.pp
+        └── templates
+            └── xubuntu.conf.erb
 
-3 directories, 2 files
+    3 directories, 2 files
 
+Kirjoitan Firefoxin osoiteriville "localhost" ja voin todeta default sivun vaihtuneen:
+
+![localhost](localhost.png)
 
