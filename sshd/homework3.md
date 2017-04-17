@@ -140,7 +140,7 @@ Muokkaan taas init.pp tiedostoa ja lisään sinne aikaisemmin poistamani rivin. 
         }
     }
 
-Ajan Puppetin uudelleen ja tarkistan ssh-daemonin portin:
+Mielestäni se näyttää ihan samalta, kuin aiemmin. Ajan Puppetin uudelleen ja tarkistan ssh-daemonin portin:
 
     xubuntu@xubuntu:~/linuxcourse/sshd$ sudo puppet apply --modulepath modules/ -e 'class {"juhasshd":}'
     Notice: Compiled catalog for xubuntu.elisa in environment production in 0.37 seconds
@@ -161,4 +161,12 @@ Ajan Puppetin uudelleen ja tarkistan ssh-daemonin portin:
     Apr 17 20:15:27 xubuntu systemd[1]: Started OpenBSD Secure Shell server.
     
 Kuten statuksesta näkyy portti on muutettu nyt 52222.
+
+B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää Gitistä modulit suoraan uuteen koneeseen. Luulen, että ensin pitäisi asentaa: Git ja Puppet. Sitten voisi ensin kloonata gitistä puppet modulin omassa kansiossaan paikalliseen koneeseen ja sitten ajaa puppet. Aika monimutkaista, varmaan joku on keksinyt suoraviivaisemmankin keinon, esimerkiksi librarian-puppet. Mutta kokeilemaan seuraavia komentoja:
+   
+    $ sudo apt-get install -y puppet
+    $ sudo apt-get install -y git
+    $ git clone https://github.com/...
+    $ sudo puppet apply --modulepath folder/modules/ -e 'class {"name":}'
+    
 
