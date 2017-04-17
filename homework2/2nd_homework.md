@@ -16,7 +16,7 @@ Ensimmäiset komentoni olivat:
 Näillä siis vaihdon itselle suomalaisen näppämistöasettelun. Ja latasin asensin Git-ohjelman jota käytetään myös tämön kotitehtävän raportoimiseen. Olimme jo oppitunnilla tutustuneet Git-ohjelmaan ja olin perustanut GitHub.com tilin, jossa minulla oli jo linuxcourse -niminen projekti. Tähän kansioon aion kerätä tämän kurssin kotitehtävät. Seuraavalla komennolla otin käyttöön kyseisen projektin kansion GitHubista:
 > $ git clone https://github.com/jkmala/linuxcourse
 
-![kuva 1](/images/2-1.jpg)
+![kuva 1](/homework2/images/2-1.jpg)
 
 
 Asensin myös Gedit editorin, koska se vaikutti mukavammalta kuin Nano.
@@ -33,7 +33,7 @@ Kirjoittelin tätä alkua tässä geditillä, mutta ajattelin kokeilla tallennus
 
 > $ git pull
 
-![kuva 2](/images/2-2.jpg)
+![kuva 2](/homework2/images/2-2.jpg)
 
 Muistin väärin, tässä vaiheessa piti antaa komento:
 
@@ -41,7 +41,7 @@ Muistin väärin, tässä vaiheessa piti antaa komento:
 
 Tällä siis hyväksytin muutokseni ja kirjoitin lyhyen kuvauksen muutoksista nano-ohjelmalla avautuneeseen tiedostoon.
 
-![kuva 3](/images/2-3.png)
+![kuva 3](/homework2/images/2-3.png)
 
 [Opettajamme Tero Karvisen kotisivuilta](http://terokarvinen.com/2016/publish-your-project-with-github) löytyi vinkki millä vältän jatkuvien salasanojen näppäilemisen. Komento menee näin:
 
@@ -68,13 +68,13 @@ Ja yhdistän ne Github palvelimella olevaan linuxcourse kansiooni:
 
 Tässä vaiheessa minulta kysytään Github salasanani.
 
-![kuva 4](/images/2-4.png)
+![kuva 4](/homework2/images/2-4.png)
 
 Jatkoin kotitehtävän B-osaan eli palvelimen asentamiseen ja konfiguroimiseen.
 
 Valitsin asennettavaksi palvelimeksi Apache2 -nettipalvelimen. Aloitin tarkistamalla Curl ohjelmalla localhost osoitteen vastauksen, jotta pystyn toteamaan aloitustilanteen:
 
-![kuva 5](/images/2-5.png)
+![kuva 5](/homework2/images/2-5.png)
 
 Ensimmäisellä tunnilla opimme tekemään yksinkertaisia puppetteja. Kävin katsomassa omilta [Wordpress-sivuilta](https://jkmala.wordpress.com/category/linuxin-keskitetty-hallinta-kevat-2017/) hieman apua.
 
@@ -111,7 +111,7 @@ Jonka ajoin komennolla:
 
 > $ sudo puppet apply -e 'class {"apassi":}'
 
-![kuva 6](/images/2-6.png)
+![kuva 6](/homework2/images/2-6.png)
 
 
 Kuten kuvasta näkyy niin nyt curl localhost komento antoi vastauksen.
