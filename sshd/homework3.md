@@ -17,6 +17,7 @@ Linuxin käynnistyttyä, suoritin peruskomennot:
     $ setxkbmap fi
     $ uname -a
     Linux xubuntu 4.4.0-31-generic #50-Ubuntu SMP Wed Jul 13 00:07:12 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+    
     $ lsb_release -a
     No LSB modules are available.
     Distributor ID:	Ubuntu
@@ -24,7 +25,7 @@ Linuxin käynnistyttyä, suoritin peruskomennot:
     Release:	16.04
     Codename:	xenial
 
-Yllä olevilla komennoilla selvitin koneen perustiedot.
+Yllä olevilla komennoilla selvitin koneen perustiedot ja alla olevilla komennoilla latasin tätä tehtävää varten tarvittavia ohjelmia.
 
     $ sudo apt-get update
     $ sudo apt-get install tree
@@ -50,7 +51,7 @@ Tässä vaiheessa kertasin itselleni, miten SSHD asennetaan koneelle käsin. Ase
     $ cp sshd_config ~/linuxcourse/sshd/modules/juhasshd/templates/sshd_config.erb
 
 Parametri -p mkdir -komennossa tarkoittaa, että kaikki polkua varten tarvittavat kansiot perustetaan myös.
-Tässä vaiheessa kävin muokkaamassa templates -kansiosta löytyvää sshd_config.erb tiedostoa riviltä, jossa luki "Port 22" muotoon "Port 52222". Poistin myös juuri asentamani SSHD-daemonin koneeltani komennolla:
+Tässä vaiheessa kävin muokkaamassa templates -kansiosta löytyvää sshd_config.erb tiedostoa riviltä, jossa luki "Port 22" muotoon "Port 52222". Ei varmaan ollut tarpeellista, mutta poistin myös juuri asentamani SSHD-daemonin koneeltani komennolla:
 
     $ sudo apt-get purge ssh
     
@@ -104,13 +105,13 @@ Tarviko tähän sudoa?
     Error: Could not match “juhasshd/sshd_config.erb”), at /home/xubuntu/linuxcourse/sshd/modules/juhasshd/manifests/init.pp:8 on node xubuntu.elisa
     Error: Could not match “juhasshd/sshd_config.erb”), at /home/xubuntu/linuxcourse/sshd/modules/juhasshd/manifests/init.pp:8 on node xubuntu.elisa
     
-Ei auttanut, muokkasin template -rivin pois init.pp tiedostosta ja ajoin uudelleen komennon:
+Ei auttanut, muokkasin virheen aiheuttaman template -rivin (rivi 8) pois init.pp tiedostosta ja ajoin uudelleen komennon:
 
     xubuntu@xubuntu:~/linuxcourse/sshd$ sudo puppet apply --modulepath modules/ -e 'class {"juhasshd":}'
     Notice: Compiled catalog for xubuntu.elisa in environment production in 0.36 seconds
     Notice: /Stage[main]/Juhasshd/Package[ssh]/ensure: ensure changed 'purged' to 'present'
     Notice: Finished catalog run in 1.95 seconds
-Ainakin lähti toimimaan ja käytän komentoa service sshd status -todistaakseni että ssh-daemon on päällä portissa 22. Template tiedostoni pitäisi muuttaa nimenomaan portin joksikin toiseksi.
+Ainakin lähti toimimaan ja käytän komentoa service sshd status -todistaakseni että ssh-daemon on päällä portissa 22. Template tiedostoni pitäisi muuttaa portin nimenomaan joksikin toiseksi, kuin 22.
 
     xubuntu@xubuntu:~/linuxcourse/sshd$ service sshd status
     ● ssh.service - OpenBSD Secure Shell server
@@ -125,7 +126,7 @@ Ainakin lähti toimimaan ja käytän komentoa service sshd status -todistaakseni
     Apr 17 18:46:40 xubuntu sshd[12155]: Server listening on :: port 22.
     Apr 17 18:46:40 xubuntu systemd[1]: Started OpenBSD Secure Shell server.
 
-Muokkaan taas init.pp tiedostoa ja lisään sinne aikaisemmin poistamani rivin. Tällä kertaa kirjoitan sen itse käsin, jonka jälkeen se näyttää tältä:
+Siis menin muokkaamaan taas init.pp tiedostoa ja lisään sinne aikaisemmin poistamani rivin. Tällä kertaa kirjoitan sen itse käsin, jonka jälkeen se näyttää tältä:
 
     class juhasshd {
         package { 'ssh':
@@ -146,7 +147,7 @@ Muokkaan taas init.pp tiedostoa ja lisään sinne aikaisemmin poistamani rivin. 
         }
     }
 
-Mielestäni se näyttää ihan samalta, kuin aiemmin. Ajan Puppetin uudelleen ja tarkistan ssh-daemonin portin:
+Mielestäni se näyttää ihan samalta, kuin aiemmin, mutta vaihdan lainausmerkit(") hipsuun('). Ajan Puppetin uudelleen ja tarkistan ssh-daemonin portin:
 
     xubuntu@xubuntu:~/linuxcourse/sshd$ sudo puppet apply --modulepath modules/ -e 'class {"juhasshd":}'
     Notice: Compiled catalog for xubuntu.elisa in environment production in 0.37 seconds
@@ -166,9 +167,9 @@ Mielestäni se näyttää ihan samalta, kuin aiemmin. Ajan Puppetin uudelleen ja
     Apr 17 20:15:27 xubuntu sshd[13649]: Server listening on :: port 52222.
     Apr 17 20:15:27 xubuntu systemd[1]: Started OpenBSD Secure Shell server.
     
-Kuten statuksesta näkyy portti on muutettu nyt 52222.
+Kuten statuksesta näkyy, moduli toimi ja portti on muutettu nyt 52222. 
 
-B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää Gitistä modulit suoraan uuteen koneeseen. Luulen, että ensin pitäisi asentaa Git ja Puppet. Sitten voisi ensin kloonata gitistä puppet modulin omassa kansiossaan paikalliseen koneeseen ja sitten ajaa puppet. Aika monimutkaista, varmaan joku on keksinyt suoraviivaisemmankin keinon, esimerkiksi librarian-puppet. Mutta käynnistän koneen uudelleen ja kokeilen seuraavia komentoja:
+B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää Gitistä modulit suoraan uuteen koneeseen. Luulen, että ensin pitäisi asentaa Git ja Puppet. Sitten voisi ensin kloonata gitistä puppet modulin omassa kansiossaan paikalliseen koneeseen ja sitten ajaa puppetin moduli. Joten käynnistän koneen uudelleen LiveUsb-tikulta ja kokeilen seuraavia komentoja:
  
     1  setxkbmap fi
     2  sudo apt-get update
@@ -177,7 +178,9 @@ B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää G
     5  git clone https://github.com/jkmala/linuxcourse
     6  sudo puppet apply --modulepath linuxcourse/modules/ -e 'class {"apassi":}'
 
-C) Yllä olevat komennot ajavat puppet modulin, jonka tein luokassa viime tunnilla tuntitehtävänä. Apache2 -webpalvelimelle säädettiin omat asetukset, joissa yhtenä oli tehtävänannossa pyydetty oletussivun muokkaus. Ohjeita löysin tähän tehtävään taas [opettajan sivuilta](http://terokarvinen.com/2016/new-default-website-with-apache2-show-your-homepage-at-top-of-example-com-no-tilde). Tässä apassi-moduleni init.pp-tiedosto manifests-kansiosta:
+Tässä vaiheessa voin todeta, että tähän ei mennyt kovinkaan kauan aikaa, noin minuutti kaikkien yllä olevien käskyjen kirjoittamiseen. Toki turhan monimutkaista ja luulen, että tähän on keksitty suoraviivaisempi keino, esimerkiksi librarian-puppet vaikutti juuri tähän ongelmaan keksityltä ohjelmalta.
+
+C) B-tehtävässä annetut komennot ajavat puppet modulin, jonka tein luokassa viime tunnilla tuntitehtävänä. Apache2 -webpalvelimelle säädettiin omat asetukset, joissa yhtenä oli tehtävänannossa pyydetty oletussivun muokkaus. Ohjeita löysin tähän tehtävään taas [opettajan sivuilta](http://terokarvinen.com/2016/new-default-website-with-apache2-show-your-homepage-at-top-of-example-com-no-tilde). Tässä apassi-moduleni init.pp-tiedosto manifests-kansiosta:
 
     class apassi {
 	
@@ -238,7 +241,9 @@ C) Yllä olevat komennot ajavat puppet modulin, jonka tein luokassa viime tunnil
 
     3 directories, 2 files
 
+Tuosta init.pp tiedostosta voisi ottaa useamman file kohdan pois ja silti saavuttaisi tehtävänannossa pyydetyn toiminnontason.
 Kirjoitan Firefoxin osoiteriville "localhost" ja voin todeta default sivun vaihtuneen:
 
 ![localhost](localhost.png)
+
 
