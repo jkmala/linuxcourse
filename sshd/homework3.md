@@ -8,8 +8,8 @@ Käytin tehtävän tekemiseen Live-USB muistitikkua, joten aloitin ihan alkuteki
 
 ![kuva1](img01.png)
 ![kuva2](img02.png)
-![kuva3](img03.png)
-![kuva4](img04.png)
+![kuva3](img03.JPG)
+![kuva4](img04.JPG)
 
 
 Linuxin käynnistyttyä, suoritin peruskomennot:
