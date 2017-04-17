@@ -4,7 +4,13 @@
 
 Tehtävänanto löytyi [opettajan sivuilta](http://terokarvinen.com/2017/aikataulu-%E2%80%93-linuxin-keskitetty-hallinta-%E2%80%93-ict4tn011-11-%E2%80%93-loppukevat-2017-p2#comment-22379).
 
-Käytin tehtävän tekemiseen Live-USB muistitikkua, joten aloitin ihan alkutekijöistä. Käyttämäni tietokoneen Biosiin oli laitettu asetukseksi Ultra Fast Boot, jolloin en pääse Boot menu -valikkoon mitenkään, vaan käyttöjärjestelmä Windows 10 latautui valmiiksi. Kirjoitin hakutoimintoon "käynnistys", jolla löysin valikon, josta löytyi muistitikulta käynnistys. Eli latasin Windows 10 puolelta suoraan käyttöjärjestelmän USB-tikulta.
+Käytin tehtävän tekemiseen Live-USB muistitikkua, joten aloitin ihan alkutekijöistä. Käyttämäni tietokoneen Biosiin oli laitettu asetukseksi Ultra Fast Boot, jolloin en pääse Boot menu -valikkoon mitenkään, vaan käyttöjärjestelmä Windows 10 latautui valmiiksi. Kirjoitin hakutoimintoon "startup", jolla löysin valikon, josta löytyi muistitikulta käynnistys. Eli latasin Windows 10 puolelta suoraan käyttöjärjestelmän USB-tikulta.
+
+![kuva1](img01.png)
+![kuva2](img02.png)
+![kuva3](img03.png)
+![kuva4](img04.png)
+
 
 Linuxin käynnistyttyä, suoritin peruskomennot:
 
@@ -162,11 +168,77 @@ Mielestäni se näyttää ihan samalta, kuin aiemmin. Ajan Puppetin uudelleen ja
     
 Kuten statuksesta näkyy portti on muutettu nyt 52222.
 
-B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää Gitistä modulit suoraan uuteen koneeseen. Luulen, että ensin pitäisi asentaa: Git ja Puppet. Sitten voisi ensin kloonata gitistä puppet modulin omassa kansiossaan paikalliseen koneeseen ja sitten ajaa puppet. Aika monimutkaista, varmaan joku on keksinyt suoraviivaisemmankin keinon, esimerkiksi librarian-puppet. Mutta kokeilemaan seuraavia komentoja:
-   
-    $ sudo apt-get install -y puppet
-    $ sudo apt-get install -y git
-    $ git clone https://github.com/...
-    $ sudo puppet apply --modulepath folder/modules/ -e 'class {"name":}'
-    
+B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää Gitistä modulit suoraan uuteen koneeseen. Luulen, että ensin pitäisi asentaa Git ja Puppet. Sitten voisi ensin kloonata gitistä puppet modulin omassa kansiossaan paikalliseen koneeseen ja sitten ajaa puppet. Aika monimutkaista, varmaan joku on keksinyt suoraviivaisemmankin keinon, esimerkiksi librarian-puppet. Mutta käynnistän koneen uudelleen ja kokeilen seuraavia komentoja:
+ 
+    1  setxkbmap fi
+    2  sudo apt-get update
+    3  sudo apt-get install -y git
+    4  sudo apt-get install -y puppet
+    5  git clone https://github.com/jkmala/linuxcourse
+    6  sudo puppet apply --modulepath linuxcourse/modules/ -e 'class {"apassi":}'
+
+C) Yllä olevat komennot ajavat puppet modulin, jonka tein luokassa viime tunnilla tuntitehtävänä. Apache2 -webpalvelimelle säädettiin omat asetukset, joissa yhtenä oli tehtävänannossa pyydetty oletussivun muokkaus. Ohjeita löysin tähän tehtävään taas [opettajan sivuilta](http://terokarvinen.com/2016/new-default-website-with-apache2-show-your-homepage-at-top-of-example-com-no-tilde). Tässä apassi-moduleni init.pp-tiedosto manifests-kansiosta:
+
+    class apassi {
+	
+	package {'apache2':
+		ensure => 'installed',
+		allowcdrom => 'true',
+	}
+	
+	file {'/home/xubuntu/publicwebsite':
+		ensure => 'directory',
+		owner => 'xubuntu',
+		group => 'xubuntu',
+	}
+	
+	file {'/home/xubuntu/publicwebsite/index.html':
+		content => "New life for Apache2!",
+		owner => 'xubuntu',
+		group => 'xubuntu',
+	}
+	
+	file {'/var/www/html/index.html':
+		content => "Welcome to default page of Apache2 web server!",
+		notify => Service['apache2'],
+	}
+
+	file {'/etc/apache2/sites-available/xubuntu.conf':
+		content => template("apassi/xubuntu.conf.erb"),
+		require => Package['apache2'],
+		notify => Service['apache2'],
+	}
+	
+	file {'/etc/apache2/sites-enabled/xubuntu.conf':
+		ensure => 'link',
+		target => '/etc/apache2/sites-available/xubuntu.conf'
+		#require => File['/etc/apache2/sites-available/xubuntu.conf'],
+				
+	}
+	
+	file {'/etc/apache2/sites-enabled/000-default.conf':
+		ensure => 'absent',
+		notify => Service['apache2'],
+	}
+	
+	service {'apache2':
+		ensure => 'running',
+		enable => 'true',
+		require => Package["apache2"],
+	}	
+    }
+
+    xubuntu@xubuntu:~/linuxcourse/modules$ tree 
+    .
+    └── apassi
+        ├── manifests
+        │   └── init.pp
+        └── templates
+            └── xubuntu.conf.erb
+
+    3 directories, 2 files
+
+Kirjoitan Firefoxin osoiteriville "localhost" ja voin todeta default sivun vaihtuneen:
+
+![localhost](localhost.png)
 
