@@ -17,6 +17,11 @@ class apassi {
 		group => 'xubuntu',
 	}
 	
+	file {'/var/www/html/index.html':
+		content => "Welcome to default page of Apache2 web server!",
+		notify => Service['apache2'],
+	}
+
 	file {'/etc/apache2/sites-available/xubuntu.conf':
 		content => template("apassi/xubuntu.conf.erb"),
 		require => Package['apache2'],
@@ -32,6 +37,7 @@ class apassi {
 	
 	file {'/etc/apache2/sites-enabled/000-default.conf':
 		ensure => 'absent',
+		notify => Service['apache2'],
 	}
 	
 	service {'apache2':
