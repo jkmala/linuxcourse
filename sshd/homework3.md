@@ -43,8 +43,44 @@ Tässä vaiheessa kertasin itselleni, miten SSHD asennetaan koneelle käsin. Ase
     $ mkdir -p ~/linuxcourse/sshd/modules/juhasshd/templates
     $ cp sshd_config ~/linuxcourse/sshd/modules/juhasshd/templates/sshd_config.erb
 
-Poistin SSHD-daemonin koneeltani komennolla:
+Parametri -p mkdir -komennossa tarkoittaa, että kaikki polkua varten tarvittavat kansiot perustetaan myös.
+Tässä vaiheessa kävin muokkaamassa templates -kansiosta löytyvää sshd_config.erb tiedostoa riviltä, jossa luki "Port 22" muotoon "Port 52222". Poistin myös juuri asentamani SSHD-daemonin koneeltani komennolla:
 
     $ sudo apt-get purge ssh
     
-Seuraavaksi kirjoitin manifestin [Tero Karvisen sivuilta](http://terokarvinen.com/2013/ssh-server-puppet-module-for-ubuntu-12-04) löytyvän ohjeen avulla
+Seuraavaksi kirjoitin manifestin [Tero Karvisen sivuilta](http://terokarvinen.com/2013/ssh-server-puppet-module-for-ubuntu-12-04) löytyvän ohjeen avulla.
+
+    $ mkdir -p /modules/juhasshd/manifests
+    $ nano modules/juhasshd/manifests/init.pp
+    
+    class juhasshd {
+        package { 'ssh':
+                ensure => 'installed',
+		allowcdrom => 'true',
+        }
+
+        file { '/etc/ssh/sshd_config':
+                content => template(“juhasshd/sshd_config”),
+                require => Package['ssh'],
+                notify => Service['ssh'],
+        }
+
+        service {'ssh':
+                ensure => 'running',
+                enable => 'true',
+                require => Package['ssh'],
+        }
+    }
+
+    
+    
+    $ tree
+    .
+    ├── homework3.md
+    └── modules
+        └── juhasshd
+            ├── manifests
+            │   └── init.pp
+            └── templates
+                └── sshd_config.erb
+
