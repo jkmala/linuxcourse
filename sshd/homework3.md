@@ -162,11 +162,74 @@ Mielestäni se näyttää ihan samalta, kuin aiemmin. Ajan Puppetin uudelleen ja
     
 Kuten statuksesta näkyy portti on muutettu nyt 52222.
 
-B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää Gitistä modulit suoraan uuteen koneeseen. Luulen, että ensin pitäisi asentaa: Git ja Puppet. Sitten voisi ensin kloonata gitistä puppet modulin omassa kansiossaan paikalliseen koneeseen ja sitten ajaa puppet. Aika monimutkaista, varmaan joku on keksinyt suoraviivaisemmankin keinon, esimerkiksi librarian-puppet. Mutta kokeilemaan seuraavia komentoja:
-   
-    $ sudo apt-get install -y puppet
-    $ sudo apt-get install -y git
-    $ git clone https://github.com/...
-    $ sudo puppet apply --modulepath folder/modules/ -e 'class {"name":}'
-    
+B) Yritän löytää tietoa ja esimerkkejä, mikä olisi paras keino siirtää Gitistä modulit suoraan uuteen koneeseen. Luulen, että ensin pitäisi asentaa Git ja Puppet. Sitten voisi ensin kloonata gitistä puppet modulin omassa kansiossaan paikalliseen koneeseen ja sitten ajaa puppet. Aika monimutkaista, varmaan joku on keksinyt suoraviivaisemmankin keinon, esimerkiksi librarian-puppet. Mutta käynnistän koneen uudelleen ja kokeilen seuraavia komentoja:
+ 
+    1  setxkbmap fi
+    2  sudo apt-get update
+    3  sudo apt-get install -y git
+    4  sudo apt-get install -y puppet
+    5  git clone https://github.com/jkmala/linuxcourse
+    6  sudo puppet apply --modulepath linuxcourse/modules/ -e 'class {"apassi":}'
+
+C) Yllä olevat komennot ajavat puppet modulin, jonka tein luokassa viime tunnin päätteeksi. Apache2 -webpalvelimelle säädettiin omat asetukset, joissa yhtenä oli tehtävänannossa pyydetty oletussivun muokkaus. Tässä apassi-modulen init.pp tiedosto manifests-kansiosta:
+
+    class apassi {
+	
+	package {'apache2':
+		ensure => 'installed',
+		allowcdrom => 'true',
+	}
+	
+	file {'/home/xubuntu/publicwebsite':
+		ensure => 'directory',
+		owner => 'xubuntu',
+		group => 'xubuntu',
+	}
+	
+	file {'/home/xubuntu/publicwebsite/index.html':
+		content => "New life for Apache2!",
+		owner => 'xubuntu',
+		group => 'xubuntu',
+	}
+	
+	file {'/var/www/html/index.html':
+		content => "Welcome to default page of Apache2 web server!",
+		notify => Service['apache2'],
+	}
+
+	file {'/etc/apache2/sites-available/xubuntu.conf':
+		content => template("apassi/xubuntu.conf.erb"),
+		require => Package['apache2'],
+		notify => Service['apache2'],
+	}
+	
+	file {'/etc/apache2/sites-enabled/xubuntu.conf':
+		ensure => 'link',
+		target => '/etc/apache2/sites-available/xubuntu.conf'
+		#require => File['/etc/apache2/sites-available/xubuntu.conf'],
+				
+	}
+	
+	file {'/etc/apache2/sites-enabled/000-default.conf':
+		ensure => 'absent',
+		notify => Service['apache2'],
+	}
+	
+	service {'apache2':
+		ensure => 'running',
+		enable => 'true',
+		require => Package["apache2"],
+	}	
+    }
+
+xubuntu@xubuntu:~/linuxcourse/modules$ tree 
+.
+└── apassi
+    ├── manifests
+    │   └── init.pp
+    └── templates
+        └── xubuntu.conf.erb
+
+3 directories, 2 files
+
 
