@@ -25,6 +25,20 @@ run script at startup for non-sudo-user
 https://linuxconfig.org/how-to-automatically-execute-shell-script-at-startup-boot-on-systemd-linux
 
 
+You can use cron if your version has the @reboot feature. From man 5 crontab:
+
+Instead of the first five fields, one of eight special strings may appear:
+
+  string         meaning
+  ------         -------
+  @reboot        Run once, at startup.
+  …
+You can edit a user-local crontab with the command crontab -e without root privileges. Then add the following line:
+
+@reboot /usr/local/bin/some-command
+Now your command will be run once at boot time.
+https://unix.stackexchange.com/questions/85666/how-to-autostart-a-background-program-by-a-non-root-user
+
 crontab
 
 static wifi settings
