@@ -43,3 +43,20 @@ crontab
 
 static wifi settings
 
+# interfaces(5) file used by ifup(8) and ifdown(8)
+auto lo
+iface lo inet loopback
+
+auto wlp3s0
+iface wlp3s0 inet static
+	address 192.168.100.200
+	netmask 255.255.255.0
+	gateway 192.168.100.1
+	dns-nameservers 8.8.8.8 8.8.4.4
+	wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+network={
+	ssid="Elisa"
+	psk=51f972d31c6cf0281c91d0a87b095d361b45c23e7dade2d4b949d569b794b54e
+}
+
