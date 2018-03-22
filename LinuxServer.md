@@ -57,6 +57,7 @@ iface wlp3s0 inet static
 
 network={
 	ssid="Elisa"
-	psk=51f972d31c6cf0281c91d0a87b095d361b45c23e7dade2d4b949d569b794b54e
+	psk=-------------------------------------------------------------------
 }
 
+use wpa_passphrase command to generate hashed password key
